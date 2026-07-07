@@ -1,0 +1,17 @@
+{
+  "name": "jadon-schwahn-portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio site for artist Jadon Schwahn",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "^16.2.10",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  }
+}
