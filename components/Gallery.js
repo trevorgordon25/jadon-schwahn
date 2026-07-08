@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { works } from '@/data/works';
+import Image from 'next/image';
 import ArtworkModal from '@/components/ArtworkModal';
 
-export default function Gallery() {
+export default function Gallery({ works }) {
     const [selectedWork, setSelectedWork] = useState(null);
 
     return (
@@ -22,11 +22,22 @@ export default function Gallery() {
                             onClick={() => setSelectedWork(work)}
                         >
                             <div className="artwork-frame">
-                                <svg
-                                    viewBox={work.svgViewBox}
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    dangerouslySetInnerHTML={{ __html: work.svgContent }}
-                                />
+                                {work.image?.url ? (
+                                    <Image
+                                        src={work.image.url}
+                                        alt={work.image.alt || work.title}
+                                        width={work.image.width || 1200}
+                                        height={work.image.height || 1200}
+                                        sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 40vw"
+                                        style={{ width: '100%', height: 'auto' }}
+                                    />
+                                ) : (
+                                    <svg
+                                        viewBox={work.svgViewBox}
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        dangerouslySetInnerHTML={{ __html: work.svgContent }}
+                                    />
+                                )}
                                 <div className="artwork-hint"><span>View Details</span></div>
                             </div>
                             <div className="artwork-meta">

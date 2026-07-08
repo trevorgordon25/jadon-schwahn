@@ -1,13 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 export default function ArtworkModal({ work, onClose }) {
     const [selectedSizeIndex, setSelectedSizeIndex] = useState(0);
+    const [isCheckingOut, setIsCheckingOut] = useState(false);
+    const [checkoutError, setCheckoutError] = useState(null);
     const isOpen = Boolean(work);
 
     useEffect(() => {
         setSelectedSizeIndex(0);
+        setCheckoutError(null);
     }, [work]);
 
     useEffect(() => {
@@ -26,6 +30,27 @@ export default function ArtworkModal({ work, onClose }) {
     }, [onClose]);
 
     const selectedSize = work?.sizes[selectedSizeIndex];
+
+    const handleBuyNow = async () => {
+        if (!work) return;
+        setIsCheckingOut(true);
+        setCheckoutError(null);
+        try {
+            const res = await fetch('/api/create-checkout-session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ workId: work.id, sizeIndex: selectedSizeIndex }),
+            });
+            const data = await res.json();
+            if (!res.ok || !data.url) {
+                throw new Error(data.error || 'Unable to start checkout');
+            }
+            window.location.href = data.url;
+        } catch (err) {
+            setCheckoutError(err.message);
+            setIsCheckingOut(false);
+        }
+    };
 
     const mailtoHref = work
         ? work.available
@@ -46,11 +71,23 @@ export default function ArtworkModal({ work, onClose }) {
             <div className="modal">
                 <div className="modal-artwork">
                     {work && (
-                        <svg
-                            viewBox={work.svgViewBox}
-                            xmlns="http://www.w3.org/2000/svg"
-                            dangerouslySetInnerHTML={{ __html: work.svgContent }}
-                        />
+                        work.image?.url ? (
+                            <Image
+                                src={work.image.url}
+                                alt={work.image.alt || work.title}
+                                width={work.image.width || 1200}
+                                height={work.image.height || 1200}
+                                sizes="(max-width: 900px) 100vw, 50vw"
+                                style={{ width: '100%', height: 'auto', maxHeight: '85vh', objectFit: 'contain' }}
+                                priority
+                            />
+                        ) : (
+                            <svg
+                                viewBox={work.svgViewBox}
+                                xmlns="http://www.w3.org/2000/svg"
+                                dangerouslySetInnerHTML={{ __html: work.svgContent }}
+                            />
+                        )
                     )}
                 </div>
                 <div className="modal-info">
@@ -90,7 +127,13 @@ export default function ArtworkModal({ work, onClose }) {
                             </div>
                             <p className="modal-price">{selectedSize?.price}</p>
                             <p className="modal-price-note">{work.priceNote}</p>
-                            <a href={mailtoHref} className="modal-cta">
+                            {checkoutError && <p className="modal-checkout-error">{checkoutError}</p>}
+                            {work.available && (
+                                <button className="modal-cta" onClick={handleBuyNow} disabled={isCheckingOut}>
+                                    {isCheckingOut ? 'Redirecting to checkout…' : 'Buy Now'}
+                                </button>
+                            )}
+                            <a href={mailtoHref} className={work.available ? 'modal-cta-secondary' : 'modal-cta'}>
                                 {work.available ? 'Inquire About This Work' : 'Commission a Similar Work'}
                             </a>
                             <button className="modal-cta-secondary" onClick={onClose}>Back to Portfolio</button>

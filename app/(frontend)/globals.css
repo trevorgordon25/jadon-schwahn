@@ -11,6 +11,19 @@
 
 html { scroll-behavior: smooth; }
 
+.checkout-banner {
+    position: relative;
+    z-index: 90;
+    padding: 6rem 2rem 1rem;
+    text-align: center;
+    font-family: var(--font-dm-sans), sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+}
+
+.checkout-banner-success { background: #2f5233; color: #f2f7f2; }
+.checkout-banner-cancelled { background: var(--linen); color: var(--ink); }
+
 body {
     background: var(--canvas);
     color: var(--ink);
@@ -219,7 +232,7 @@ nav.scrolled .nav-links a:hover { color: var(--ink) !important; }
     position: relative;
 }
 
-.artwork-frame svg { width: 100%; display: block; }
+.artwork-frame svg, .artwork-frame img { width: 100%; display: block; }
 
 .artwork-hint {
     position: absolute;
@@ -460,7 +473,8 @@ footer p { font-size: 0.72rem; color: var(--stone); letter-spacing: 0.08em; }
     height: 100vh;
 }
 
-.modal-artwork svg {
+.modal-artwork svg,
+.modal-artwork img {
     width: 100%;
     height: auto;
     max-height: 85vh;
@@ -626,6 +640,13 @@ footer p { font-size: 0.72rem; color: var(--stone); letter-spacing: 0.08em; }
 }
 
 .modal-cta:hover { background: var(--muted); }
+.modal-cta:disabled { opacity: 0.6; cursor: wait; }
+
+.modal-checkout-error {
+    font-size: 0.72rem;
+    color: #b3352b;
+    margin-bottom: 1rem;
+}
 
 .modal-cta-secondary {
     display: block;

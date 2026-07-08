@@ -26,3 +26,13 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+next-env.d.ts
+
+# payload
+/media
+
+.vercel
+.env*
+
+# claude code local settings
+.claude/settings.local.json

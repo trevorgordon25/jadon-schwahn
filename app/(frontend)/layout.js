@@ -1,4 +1,7 @@
 import { Cormorant_Garamond, DM_Sans } from 'next/font/google';
+import { NeonAuthUIProvider } from '@neondatabase/auth/react';
+import '@neondatabase/auth/ui/css';
+import { authClient } from '@/lib/auth/client';
 import './globals.css';
 
 const cormorant = Cormorant_Garamond({
@@ -23,8 +26,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`}>
-            <body>{children}</body>
+        <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`} suppressHydrationWarning>
+            <body>
+                <NeonAuthUIProvider authClient={authClient}>
+                    {children}
+                </NeonAuthUIProvider>
+            </body>
         </html>
     );
 }
