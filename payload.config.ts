@@ -41,6 +41,10 @@ export default buildConfig({
         media: true,
       },
       token: process.env.BLOB_READ_WRITE_TOKEN,
+      // Server-side uploads pass the file buffer to Node's built-in fetch, which
+      // throws "SharedArrayBuffer is not allowed" for small in-memory buffers.
+      // Client uploads go browser -> Blob directly via a signed URL instead.
+      clientUploads: true,
     }),
   ],
 })
