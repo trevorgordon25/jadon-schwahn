@@ -34,13 +34,6 @@ export const Works: CollectionConfig = {
       },
     },
     {
-      name: 'gridClass',
-      type: 'text',
-      admin: {
-        description: 'CSS grid placement class used by the gallery layout (e.g. item-1).',
-      },
-    },
-    {
       name: 'svgViewBox',
       type: 'text',
       admin: {

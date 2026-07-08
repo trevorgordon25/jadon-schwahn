@@ -177,10 +177,6 @@ export interface Work {
    */
   image?: (number | null) | Media;
   /**
-   * CSS grid placement class used by the gallery layout (e.g. item-1).
-   */
-  gridClass?: string | null;
-  /**
    * Placeholder illustration viewBox. Ignored once an image is uploaded.
    */
   svgViewBox?: string | null;
@@ -328,7 +324,6 @@ export interface WorksSelect<T extends boolean = true> {
   medium?: T;
   year?: T;
   image?: T;
-  gridClass?: T;
   svgViewBox?: T;
   svgContent?: T;
   sizes?:

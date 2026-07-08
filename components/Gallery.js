@@ -4,6 +4,11 @@ import { useState } from 'react';
 import Image from 'next/image';
 import ArtworkModal from '@/components/ArtworkModal';
 
+// The gallery's editorial layout is 7 hand-tuned placements (varying column
+// spans/offsets, see .item-1..item-7 in globals.css). Cycling through them by
+// position keeps every new work laid out consistently with no manual setup.
+const LAYOUT_PATTERN_LENGTH = 7;
+
 export default function Gallery({ works }) {
     const [selectedWork, setSelectedWork] = useState(null);
 
@@ -15,10 +20,10 @@ export default function Gallery({ works }) {
                     <h2 className="section-title">Recent Paintings &amp; Drawings</h2>
                 </div>
                 <div className="gallery-grid">
-                    {works.map((work) => (
+                    {works.map((work, index) => (
                         <div
                             key={work.id}
-                            className={`gallery-item ${work.gridClass}`}
+                            className={`gallery-item item-${(index % LAYOUT_PATTERN_LENGTH) + 1}`}
                             onClick={() => setSelectedWork(work)}
                         >
                             <div className="artwork-frame">
