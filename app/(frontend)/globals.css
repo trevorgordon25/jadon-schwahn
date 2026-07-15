@@ -153,6 +153,22 @@ nav.scrolled .nav-links a:hover { color: var(--ink) !important; }
     position: relative;
 }
 
+/* Hero copy slides in from the left on load, staggered so the eyebrow
+   leads, then the title, then the subtitle. Plain CSS animation (no JS
+   state) so it always plays regardless of image load timing. */
+.hero-eyebrow, .hero-title, .hero-subtitle {
+    animation: heroTextSlideIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-eyebrow { animation-delay: 0.15s; }
+.hero-title { animation-delay: 0.4s; }
+.hero-subtitle { animation-delay: 0.7s; }
+
+@keyframes heroTextSlideIn {
+    from { transform: translateX(-48px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
 .hero-scroll {
     position: absolute;
     right: 4rem;
@@ -220,6 +236,19 @@ nav.scrolled .nav-links a:hover { color: var(--ink) !important; }
 
 .gallery-item:hover { transform: translateY(-6px); z-index: 2; }
 .gallery-item:hover .artwork-frame { box-shadow: var(--lift-shadow); }
+
+/* Scroll reveal: artwork slides up and fades in as it enters the viewport. */
+.reveal-up {
+    opacity: 0;
+    transform: translateY(56px);
+    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.reveal-up.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
 
 /* View hint on hover */
 .gallery-item:hover .artwork-hint { opacity: 1; }
@@ -701,4 +730,14 @@ footer p { font-size: 0.72rem; color: var(--stone); letter-spacing: 0.08em; }
     .gallery-item:hover { transform: none; }
     .scroll-line { animation: none; opacity: 0.5; }
     .modal, .modal-backdrop { transition: none; }
+    .reveal-up {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+    .hero-eyebrow, .hero-title, .hero-subtitle {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
 }

@@ -1,11 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const HERO_IMAGE = 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1800&q=80';
 
 export default function Hero() {
     const [loaded, setLoaded] = useState(false);
+    const imgRef = useRef(null);
+
+    useEffect(() => {
+        // A cached image can finish loading before this effect attaches the
+        // onLoad handler below, which would otherwise leave `loaded` stuck
+        // false (and the zoom-in frozen) forever.
+        if (imgRef.current?.complete) setLoaded(true);
+    }, []);
 
     return (
         <section className="hero">
@@ -15,6 +23,7 @@ export default function Hero() {
             />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
+                ref={imgRef}
                 src={HERO_IMAGE}
                 alt=""
                 onLoad={() => setLoaded(true)}
