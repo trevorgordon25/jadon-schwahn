@@ -45,6 +45,9 @@ export default buildConfig({
       // throws "SharedArrayBuffer is not allowed" for small in-memory buffers.
       // Client uploads go browser -> Blob directly via a signed URL instead.
       clientUploads: true,
+      // Vercel Blob rejects re-uploads of a filename that already exists (no
+      // overwrite support in this plugin), so give every upload a unique name.
+      addRandomSuffix: true,
     }),
   ],
 })
